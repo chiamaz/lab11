@@ -6,6 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +73,8 @@ public final class ConcurrentGUI extends JFrame {
          * java.util.concurrent.ExecutorService
          */
         final Agent agent = new Agent();
-        new Thread(agent).start();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(agent);
         /*
          * Register a listener that stops it
          */
