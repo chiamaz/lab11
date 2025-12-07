@@ -27,9 +27,9 @@ public final class MultiThreadedMatrixSum implements SumMatrix {
     @Override
     public double sum(final double[][] matrix) {
         final List<Double> list = new ArrayList<>(nthread);
-        for (double[] array : matrix) {
-            Arrays.stream(array).forEach(e -> list.add(e));
-        };
+        for (final double[] array : matrix) {
+            Arrays.stream(array).forEach(list::add);
+        }
 
         final int size = list.size() % nthread + list.size() / nthread;
         /*

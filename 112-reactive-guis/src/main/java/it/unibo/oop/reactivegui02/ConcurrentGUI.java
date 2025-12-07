@@ -6,9 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,8 +69,8 @@ public final class ConcurrentGUI extends JFrame {
          * java.util.concurrent.ExecutorService
          */
         final Agent agent = new Agent();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(agent);
+        // final ExecutorService executor = Executors.newSingleThreadExecutor();
+        // executor.submit(agent);
         /*
          * Register a listener that stops it
          */
@@ -84,6 +81,7 @@ public final class ConcurrentGUI extends JFrame {
             up.setEnabled(false);
             down.setEnabled(false);
         });
+        new Thread(agent).start();
     }
 
     /*
@@ -108,7 +106,7 @@ public final class ConcurrentGUI extends JFrame {
         @Override
         public void run() {
             while (!this.stop) {
-                if (this.increment){
+                if (this.increment) {
                     try {
                         // The EDT doesn't access `counter` anymore, it doesn't need to be volatile
                         final var nextText = Integer.toString(this.counter);
@@ -118,8 +116,7 @@ public final class ConcurrentGUI extends JFrame {
                     } catch (InvocationTargetException | InterruptedException ex) {
                         LOGGER.error(ex.getMessage(), ex);
                     }
-                }
-                else {
+                } else {
                     try {
                         // The EDT doesn't access `counter` anymore, it doesn't need to be volatile
                         final var nextText = Integer.toString(this.counter);
@@ -140,11 +137,11 @@ public final class ConcurrentGUI extends JFrame {
             this.stop = true;
         }
 
-        public void increment(){
+        public void increment() {
             this.increment = true;
         }
 
-        public void decrement(){
+        public void decrement() {
             this.increment = false;
         }
     }

@@ -55,7 +55,6 @@ public final class MultiThreadedListSumClassic implements SumList {
          * Return the sum
          */
         return sum;
-        
     }
 
     private static class Worker extends Thread {
